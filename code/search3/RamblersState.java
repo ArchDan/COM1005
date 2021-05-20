@@ -4,6 +4,7 @@ public class RamblersState extends SearchState {
 
     // Coords for this state
     private Coords coords;
+    private int localCost;
 
     // Contructor
     public RamblersState(Coords c, int lc) {
@@ -11,15 +12,25 @@ public class RamblersState extends SearchState {
         localCost = lc;
     }
 
-    // accessor for coords
+    // accessors
     public Coords getCoords() {
         return coords;
+    }
+
+    public int getLocalCost() {
+        return localCost;
     }
 
     @Override
     boolean goalPredicate(Search searcher) {
         RamblersSearch ramblerSearcher =  (RamblersSearch) searcher;
         Coords target = ramblerSearcher.getGoal();
+        // System.out.println("Goal is: "+target.getx()+","+target.gety());
+        // System.out.println("Is the goal: "+coords.equals(target));
+
+        String targetS = target.getx()+","+target.gety();
+        String goalS = coords.
+
         return (coords.equals(target));
     }
 
@@ -73,12 +84,15 @@ public class RamblersState extends SearchState {
     @Override
     boolean sameState(SearchState n2) {
         RamblersState secondState = (RamblersState) n2;
-        return (this.equals(secondState));
+        return (coords.equals(secondState.getCoords()));
     }
 
     public String toString() {
-        // TODO
-        return "";
+        String s = "";
+        int x = coords.getx(), y = coords.gety();
+        s = s + "( "+x+" , "+y+" )";
+        s = s + " Cost: " + localCost;
+        return s;
     }
 
 }

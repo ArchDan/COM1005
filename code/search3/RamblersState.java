@@ -25,17 +25,22 @@ public class RamblersState extends SearchState {
     boolean goalPredicate(Search searcher) {
         RamblersSearch ramblerSearcher =  (RamblersSearch) searcher;
         Coords target = ramblerSearcher.getGoal();
-        // System.out.println("Goal is: "+target.getx()+","+target.gety());
-        // System.out.println("Is the goal: "+coords.equals(target));
-        return ((ramblerSearcher.getGoal()).equals(target));
+        
+        boolean predicate = false;
+
+        if (coords.getx() == target.getx() && coords.gety() == target.gety()) {
+            predicate = true;
+        }
+
+        return predicate;
     }
 
     @Override
     ArrayList<SearchState> getSuccessors(Search searcher) {
+
         RamblersSearch ramblerSearcher =  (RamblersSearch) searcher;
         TerrainMap terrain = ramblerSearcher.getTMap();
         ArrayList<SearchState> successors = new ArrayList<>();
-
         // get current coords, put them into terrain[][]
         // get all next coords and put them into terrain[][]
         // calculate cost
@@ -43,6 +48,8 @@ public class RamblersState extends SearchState {
         // in y,x terms
         ArrayList<Coords> surroundingCoords= new ArrayList<Coords>();
 
+
+        //Doesn't quite work
         for (int a = -1; a < 2; a++) {
             int y2 = y + a;
             if ((y2 >= 0) && (y2 <= terrain.getHeight())) {
@@ -57,22 +64,30 @@ public class RamblersState extends SearchState {
         }
 
         // iterates through, finding costs, adding them to successors
-        for (Coords c: surroundingCoords) {
-            int cost = 1;
-            int x1 = c.getx(), y1 = c.gety();
-            int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
-            tmap = terrain.getTmap();
+        try{
+            for (Coords c: surroundingCoords) {
+                int cost;
+                int x1 = c.getx(), y1 = c.gety();
+                int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
+                tmap = terrain.getTmap();
 
-            int h = tmap[y][x], h1 = tmap[y1][x1];
-            if (!(h1 <= h)) {
-                cost = 1 + (Math.abs(h1 - h));
+                int h = tmap[y][x], h1 = tmap[y1][x1];
+                if ((h1 <= h)) {
+                    cost = 1;
+                }
+                else {
+                    cost = 1 + (Math.abs(h1 - h));
+                }
+
+                RamblersState currentState = new RamblersState(c,cost);
+
+                successors.add(currentState);
             }
-
-            RamblersState currentState = new RamblersState(c,cost);
-
-            successors.add(currentState);
-
         }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+
         return successors;
     }
 
@@ -80,13 +95,21 @@ public class RamblersState extends SearchState {
     @Override
     boolean sameState(SearchState n2) {
         RamblersState secondState = (RamblersState) n2;
-        return (coords.equals(secondState.getCoords()));
+        Coords coords2 = secondState.getCoords();
+        
+        boolean same = false;
+
+        if (coords.getx() == coords2.getx() && coords.gety() == coords2.gety()) {
+            same = true;
+        }
+
+        return same;
     }
 
     public String toString() {
         String s = "";
         int x = coords.getx(), y = coords.gety();
-        s = s + "( "+x+" , "+y+" )";
+        s = s + "( "+y+" , "+x+" )";
         s = s + " Cost: " + localCost;
         return s;
     }

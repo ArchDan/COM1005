@@ -27,11 +27,7 @@ public class RamblersState extends SearchState {
         Coords target = ramblerSearcher.getGoal();
         // System.out.println("Goal is: "+target.getx()+","+target.gety());
         // System.out.println("Is the goal: "+coords.equals(target));
-
-        String targetS = target.getx()+","+target.gety();
-        String goalS = coords.
-
-        return (coords.equals(target));
+        return ((ramblerSearcher.getGoal()).equals(target));
     }
 
     @Override

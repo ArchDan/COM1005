@@ -45,41 +45,30 @@ public class RamblersState extends SearchState {
         int x = coords.getx(), y = coords.gety();
         // in y,x terms
         ArrayList<Coords> surroundingCoords= new ArrayList<Coords>();
-
-
-        //Doesn't quite work
-        for (int a = -1; a < 2; a++) {
-            int y2 = y + a;
-            if ((y2 >= 0) && (y2 <= terrain.getHeight())) {
-                for (int b = -1; b < 2; b++) {
-                    int x2 = x + b;
-                    if ((x2 >= 0) && (x2 <= terrain.getWidth())) {
-                        Coords newCoord = new Coords(y2,x2);
-                        surroundingCoords.add(newCoord);
-                    }
+        int[][] surCoords = {{y-1,x},{y+1,x},{y,x-1},{y,x+1}};
+        for (int i = 0; i < surCoords.length; i++) {
+            if ((surCoords[i][0] >= 0) && (surCoords[i][0] < terrain.getHeight())){
+                if ((surCoords[i][1] >= 0) && (surCoords[i][1] < terrain.getWidth())) {
+                    Coords newCoord = new Coords(surCoords[i][0],surCoords[i][1]);
+                    surroundingCoords.add(newCoord);
                 }
             }
         }
 
         // iterates through, finding costs, adding them to successors
-        try{
-            for (Coords c: surroundingCoords) {
-                int cost;
-                int x1 = c.getx(), y1 = c.gety();
-                int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
-                tmap = terrain.getTmap();
+        for (Coords c: surroundingCoords) {
+            int cost;
+            int x1 = c.getx(), y1 = c.gety();
+            int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
+            tmap = terrain.getTmap();
 
-                int h = tmap[y][x], h1 = tmap[y1][x1];
-                if ((h1 <= h)) { cost = 1; }
-                else { cost = 1 + (Math.abs(h1 - h)); }
+            int h = tmap[y][x], h1 = tmap[y1][x1];
+            if ((h1 <= h)) { cost = 1; }
+            else { cost = 1 + (Math.abs(h1 - h)); }
 
-                RamblersState currentState = new RamblersState(c,cost);
-                successors.add(currentState);
-            }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
+            RamblersState currentState = new RamblersState(c,cost);
+            successors.add(currentState);
+        }   
 
         return successors;
     }

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class RamblersSearch extends Search{
 	
-	private TerrainMap tMap; // map we're searching
+	private TerrainMap tMap; // map being searched
 	private Coords goal; // goal coordinates
 
 	public TerrainMap getTMap() {

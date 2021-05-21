@@ -41,9 +41,7 @@ public class RamblersState extends SearchState {
         RamblersSearch ramblerSearcher =  (RamblersSearch) searcher;
         TerrainMap terrain = ramblerSearcher.getTMap();
         ArrayList<SearchState> successors = new ArrayList<>();
-        // get current coords, put them into terrain[][]
-        // get all next coords and put them into terrain[][]
-        // calculate cost
+
         int x = coords.getx(), y = coords.gety();
         // in y,x terms
         ArrayList<Coords> surroundingCoords= new ArrayList<Coords>();
@@ -72,15 +70,10 @@ public class RamblersState extends SearchState {
                 tmap = terrain.getTmap();
 
                 int h = tmap[y][x], h1 = tmap[y1][x1];
-                if ((h1 <= h)) {
-                    cost = 1;
-                }
-                else {
-                    cost = 1 + (Math.abs(h1 - h));
-                }
+                if ((h1 <= h)) { cost = 1; }
+                else { cost = 1 + (Math.abs(h1 - h)); }
 
                 RamblersState currentState = new RamblersState(c,cost);
-
                 successors.add(currentState);
             }
         }

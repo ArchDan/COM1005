@@ -1,0 +1,84 @@
+% ---------------------------- %
+% Assignment Report Template
+% 
+% Heidi Christensen, 2020
+% --------------------------   %
+
+
+\documentclass[11pt,oneside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+
+\title{Experimental report for the 2021 COM1005 Assignment: The Rambler's Problem\footnote{https://github.com/ArchDan/COM1005}}
+\author{Daniel Taylor}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Description of my branch-and-bound implementation}
+I created the necessary classes for b-n-b, then set about filling in the abstract classes.
+Most work occurs in RamblersState, as RamblersSearch only really needed accessor methods to get important bits of imformation.
+I created accessors for coordinates (coords) and the localCost that would be necessary
+\begin{itemize}
+\item GoalPredicate():
+\item Takes searcher, finds the goal it is looking for. If this doesn't match the current coordinates, it returns false, otherwise true
+\end{itemize}
+
+\begin{itemize}
+	\item GetSuccessors():
+	\item Probably the most extensive method in this class
+	\item gets the x and y of the current 
+	\item Then finds all surrounding nodes and adds them to an ArrayList of nodes that are in bounds
+	\item for every node in the surrounding nodes, calculate the cost of moving to it from the current node
+	\item Add that as a state to successors, and then return that
+\end{itemize}
+
+\begin{itemize}
+	\item sameState():
+	\item Checks if the coordinates are the same, if they are, returns true
+\end{itemize}
+	
+These are the major functions that were implemented, after that, all that came down to it was running some coordinates through it in RunRamblersBB.java
+
+\section{Description of my A* implementation}
+
+This is an example of a table in \LaTeX
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+        System      & Measurement [\%] \\ \hline
+        Basic       & 40\% \\
+        Improved v1 & 42\% \\
+        Improved v2 & 43\% \\
+    \end{tabular}
+    \caption{Example table}
+    \label{tab:my_label}
+\end{table}
+
+\section{Assessing efficiency}
+
+Figure~\ref{fig:panda} shows and example of including a picture and giving it a caption and a label that you can reference in the text.
+
+\begin{figure}[ht]
+\centering
+  \includegraphics[scale=0.4]{Panda.png}
+  \caption{This is Heidi's cat Panda.}
+  \label{fig:panda}
+ \end{figure} 
+ 
+\subsection{Assessing the efficiency of my branch-and-bound search algorithm}
+
+\subsection{Assessing the efficiency of my A* search algorithm}
+
+\subsection{Comparing the two search strategies}
+
+\section{Conclusions}
+
+
+
+\end{document}

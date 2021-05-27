@@ -38,29 +38,28 @@ public class RamblersState extends SearchState{
         int x1 = coords.getx(), y1 = coords.gety();
         TerrainMap terrain = s.getTMap();
         int[][] tmap = terrain.getTmap();
-
+        
         Coords goal = s.getGoal();
         int x2 = goal.getx(), y2 = goal.gety();
-        
+
         // ManhattanDistance
         // sum of absolute differences between two points
-        int ydiff = y2 - y1, xdiff = x2 - x1;
-        int manDist = Math.abs(ydiff + xdiff);
+        // int ydiff = y2 - y1, xdiff = x2 - x1;
+        // int manDist = Math.abs(ydiff + xdiff);
 
         // Euclidean Distance
         // pythagorian difference between two points
-        int ydSquare = ydiff * ydiff, xdSquare = xdiff * xdiff;
-        double unrounded = Math.sqrt(ydSquare + xdSquare);
-        int EucDist = (int) Math.floor(unrounded);
+        // int ydSquare = ydiff * ydiff, xdSquare = xdiff * xdiff;
+        // double unrounded = Math.sqrt(ydSquare + xdSquare);
+        // int EucDist = (int) Math.floor(unrounded);
 
         // Height Difference
         // change in height
         int h1 = tmap[y1][x1], h2 = tmap[y2][x2];
         int hDiff = Math.abs(h2 - h1);
 
-        // choose one to change heurisitcs for now
-        result = manDist;
-        result = EucDist;
+        // used to test for best heurisitic
+        // less than as A star should be underestimate
         result = hDiff;
 
         return result;
@@ -78,7 +77,7 @@ public class RamblersState extends SearchState{
         ArrayList<Coords> surroundingCoords= new ArrayList<Coords>();
         int[][] surCoords = {{y-1,x},{y+1,x},{y,x-1},{y,x+1}};
         for (int i = 0; i < surCoords.length; i++) {
-            if ((surCoords[i][0] >= 0) && (surCoords[i][0] < terrain.getHeight())){
+            if ((surCoords[i][0] >= 0) && (surCoords[i][0] < terrain.getDepth())){
                 if ((surCoords[i][1] >= 0) && (surCoords[i][1] < terrain.getWidth())) {
                     Coords newCoord = new Coords(surCoords[i][0],surCoords[i][1]);
                     surroundingCoords.add(newCoord);
@@ -88,19 +87,25 @@ public class RamblersState extends SearchState{
 
         // iterates through, finding costs, adding them to successors
         for (Coords c: surroundingCoords) {
-            int cost;
-            int x1 = c.getx(), y1 = c.gety();
-            int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
-            tmap = terrain.getTmap();
+            
+            // try/catch for incorrect inputs
+            try {
+                int cost;
+                int x1 = c.getx(), y1 = c.gety();
 
-            int h = tmap[y][x], h1 = tmap[y1][x1];
-            if ((h1 <= h)) { cost = 1; }
-            else { cost = 1 + (Math.abs(h1 - h)); }
+                int [][] tmap = terrain.getTmap();
 
-            int remCost = getRemCost(ramblerSearcher, coords);
+                int h = tmap[y][x], h1 = tmap[y1][x1];
+                if ((h1 <= h)) { cost = 1; }
+                else { cost = 1 + (Math.abs(h1 - h)); }
 
-            RamblersState currentState = new RamblersState(c,cost,remCost);
-            successors.add(currentState);
+                estRemCost = getRemCost(ramblerSearcher, coords);
+
+                RamblersState currentState = new RamblersState(c,cost,estRemCost);
+                successors.add(currentState);
+            }
+            catch (Exception e) { System.out.println(e); }
+
         }
         return successors;
     }
@@ -124,6 +129,7 @@ public class RamblersState extends SearchState{
         int x = coords.getx(), y = coords.gety();
         s = s + "( "+y+" , "+x+" )";
         s = s + " Cost: " + localCost;
+        s = s + " RemCost: " + estRemCost;
         return s;
     }
     

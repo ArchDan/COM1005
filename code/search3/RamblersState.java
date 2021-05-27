@@ -47,7 +47,7 @@ public class RamblersState extends SearchState {
         ArrayList<Coords> surroundingCoords= new ArrayList<Coords>();
         int[][] surCoords = {{y-1,x},{y+1,x},{y,x-1},{y,x+1}};
         for (int i = 0; i < surCoords.length; i++) {
-            if ((surCoords[i][0] >= 0) && (surCoords[i][0] < terrain.getHeight())){
+            if ((surCoords[i][0] >= 0) && (surCoords[i][0] < terrain.getDepth())){
                 if ((surCoords[i][1] >= 0) && (surCoords[i][1] < terrain.getWidth())) {
                     Coords newCoord = new Coords(surCoords[i][0],surCoords[i][1]);
                     surroundingCoords.add(newCoord);
@@ -57,17 +57,21 @@ public class RamblersState extends SearchState {
 
         // iterates through, finding costs, adding them to successors
         for (Coords c: surroundingCoords) {
+            
+            // try/catch block for incorrect inputs
+            try {
             int cost;
             int x1 = c.getx(), y1 = c.gety();
-            int [][] tmap = new int[terrain.getHeight()][terrain.getWidth()];
-            tmap = terrain.getTmap();
-
+            int [][] tmap = terrain.getTmap();
+     
             int h = tmap[y][x], h1 = tmap[y1][x1];
             if ((h1 <= h)) { cost = 1; }
             else { cost = 1 + (Math.abs(h1 - h)); }
 
             RamblersState currentState = new RamblersState(c,cost);
             successors.add(currentState);
+            }
+            catch (Exception e) { System.out.println(e); }
         }   
 
         return successors;

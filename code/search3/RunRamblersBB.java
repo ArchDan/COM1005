@@ -5,7 +5,12 @@ public class RunRamblersBB {
         System.out.println("Running RamblersBB.java");
         
         // sets start point and a goal
-        Coords start = new Coords(0,0), goal = new Coords(1,0);
+        Coords start = new Coords(0,0), goal = new Coords(15,15);
+        // Coords start = new Coords(0,0), goal = new Coords(15,0);
+        // Coords start = new Coords(0,0), goal = new Coords(0,15);
+        // Coords start = new Coords(7,1), goal = new Coords(8,8);
+        // Coords start = new Coords(8,8), goal = new Coords(7,1);
+
         TerrainMap map = new TerrainMap("tmc.pgm");
 
         RamblersSearch searcher = new RamblersSearch(map, goal);

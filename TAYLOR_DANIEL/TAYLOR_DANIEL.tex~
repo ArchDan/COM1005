@@ -20,7 +20,7 @@
 \maketitle
 
 \section{Description of my branch-and-bound implementation}
-I created the necessary classes for b-n-b, then set about filling in the abstract classes. Most work occurs in RamblersState, as RamblersSearch only really needed accessor methods to get important bits of imformation. I created accessors for coordinates (coords) and the localCost that would be necessary.
+I created the necessary classes for b-n-b, then set about filling in the abstract classes. Most work occurs in RamblersState, as RamblersSearch only really needed accessor methods to get important bits of imformation. I created accessors for coordinates (coords) and the localCost that would be necessary
 GoalPredicate():
 \begin{itemize}
     \item Takes searcher, finds the goal it is looking for. If this doesn't match the current coordinates, it returns false, otherwise true
